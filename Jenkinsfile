@@ -68,8 +68,8 @@ pipeline {
             stage('build-product-service') {
               steps {
                 sh "docker-compose -f product-service/api/docker-compose.build.yaml up"
-                junit 'product-service/api/target/surefire-reports/**/TEST-*.xml'
-                cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'product-service/api/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
+                // junit 'product-service/api/target/surefire-reports/**/TEST-*.xml'
+                // cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'product-service/api/target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
                 sh "docker build -f product-service/api/Dockerfile.image -t ${BOATHOUSE_CONTAINER_REGISTRY}/product_service_api:${env.BRANCH_NAME}-${env.BUILD_ID} -t ${BOATHOUSE_CONTAINER_REGISTRY}/product_service_api:latest product-service/api"
 
                 sh "docker login docker.pkg.github.com -u ${CREDS_GITHUB_REGISTRY_USR} -p ${CREDS_GITHUB_REGISTRY_PSW}"
@@ -104,6 +104,23 @@ pipeline {
             }
         }
 
+<<<<<<< HEAD
+        // stage('Jmeter') {
+        //   steps {
+        //     script{
+        //         echo "waitting for the sevice up...."
+        //         sleep 80
+        //         sh "ls -al ./jmeter"
+        //         sh "cd jmeter && find . -name '*.log' -delete"
+        //         sh "rm -R ./jmeter/output || exit 0"
+        //         sh "mkdir ./jmeter/output"
+        //         sh "docker run --interactive --rm --volume `pwd`/jmeter:/jmeter egaillardon/jmeter --nongui --testfile boat-house.jmx --logfile output/result.jtl -e -o ./output"
+        //         sh "ls -al ./jmeter"
+        //         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: './jmeter/output', reportFiles: 'index.html', reportName: 'Jmeter Report', reportTitles: ''])
+        //     }
+        //   }
+        // }
+=======
         
         stage('Jmeter') {
           steps {
@@ -120,6 +137,7 @@ pipeline {
             }
           }
         }
+>>>>>>> 7f4e8bcaef06ea19dddb289cb41196ae7a5bc794
 
         stage('build-uitest'){
             steps {
@@ -172,5 +190,9 @@ pipeline {
         sh "sudo rm -rf product-service/api/target"
       }
     }
+<<<<<<< HEAD
+}
+=======
   }
 
+>>>>>>> 7f4e8bcaef06ea19dddb289cb41196ae7a5bc794
